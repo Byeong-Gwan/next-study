@@ -9,6 +9,19 @@ import {
 } from './definitions';
 import { formatCurrency } from './utils';
 
+
+// app/lib/data.ts (클라이언트 측)
+export async function fetchInvoices(query: string, currentPage: number) {
+  const response = await fetch(`/api/invoices?query=${encodeURIComponent(query)}&page=${currentPage}`);
+
+  if (!response.ok) {
+    throw new Error(`HTTP error! Status: ${response.status}`);
+  }
+
+  const data = await response.json();
+  return data;
+}
+
 export async function fetchRevenue() {
   try {
     // Artificially delay a response for demo purposes.
@@ -213,5 +226,33 @@ export async function fetchFilteredCustomers(query: string) {
   } catch (err) {
     console.error('Database Error:', err);
     throw new Error('Failed to fetch customer table.');
+  }
+}
+
+// ==================================================================================================
+// MembersTable 인터페이스 정의
+interface MembersTable {
+  employee_id: number;
+  name: string;
+  team: string;
+  position: string;
+  position_nm: string;
+}
+const a = 5;
+export async function fetchFilteredMembers() {
+
+  try {
+    const data = await fetch('http://localhost:4000/api/members').then(response => {
+      return response.json();
+    })
+    const totalPages = Math.ceil(data.length / a);
+
+    return {
+      data,
+      totalPages
+    }
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch members.');
   }
 }
