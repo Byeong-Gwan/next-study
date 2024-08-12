@@ -5,7 +5,7 @@ import { CreateInvoice } from '@/app/ui/invoices/buttons';
 import { lusitana } from '@/app/ui/fonts';
 import { InvoicesTableSkeleton } from '@/app/ui/skeletons';
 import { Suspense } from 'react';
-import { fetchFilteredMembers, fetchInvoicesPages } from '@/app/lib/data';
+import { fetchFilteredMembers, fetchInvoicesPages, fetchMembersPages } from '@/app/lib/data';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -22,7 +22,9 @@ export default async function Page({
 }) {
   const query = searchParams?.query || '';
   const currentPage = Number(searchParams?.page) || 1;
-  const data = await fetchFilteredMembers();
+  // const totalPages = await fetchMembersPages(query,currentPage);
+
+  const data = await fetchFilteredMembers(query, currentPage);
 
   return (
     <div className="rounded-lg bg-gray-50 p-2 md:pt-0">
@@ -30,12 +32,12 @@ export default async function Page({
         <h1 className={`${lusitana.className} text-2xl`}>Member List</h1>
       </div>
       <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
-        <Search placeholder="Search invoices..." />
-        <CreateInvoice />
+        <Search placeholder="Search members..." />
+
       </div>
-      <div>
-        <Table data = {data.data}  />
-      </div>
+      <Suspense key={query + currentPage} fallback={<InvoicesTableSkeleton />}>
+        <Table data = {data.data}   currentPage={currentPage}/>
+      </Suspense>
       <div className="mt-5 flex w-full justify-center">
         <Pagination totalPages={data.totalPages} />
       </div>

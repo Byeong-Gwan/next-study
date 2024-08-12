@@ -239,20 +239,35 @@ interface MembersTable {
   position_nm: string;
 }
 const a = 5;
-export async function fetchFilteredMembers() {
-
+export async function fetchFilteredMembers(query: string,
+                                           currentPage: number,) {
   try {
-    const data = await fetch('http://localhost:4000/api/members').then(response => {
-      return response.json();
-    })
-    const totalPages = Math.ceil(data.length / a);
+    const response = await fetch(`http://localhost:4000/api/members?page=${currentPage}&query=${encodeURIComponent(query)}`);
 
-    return {
-      data,
-      totalPages
+    if (!response.ok) {
+      throw new Error('Failed to fetch members.');
     }
+
+    const data = await response.json();
+
+    return { data:data } // Assuming `members` is the array of member data
   } catch (error) {
     console.error('Database Error:', error);
     throw new Error('Failed to fetch members.');
   }
 }
+
+// export async function fetchMembersPages() {
+//   try {
+//     const response = await fetch(`http://localhost:4000/api/members`);
+//
+//     const data = await response.json();
+//     const totalCount = data.totalCount; // totalCount 값을 포함한 응답이 있다고 가정
+//     // const totalPages = Math.ceil(totalCount / ITEMS_PER_PAGE);
+//
+//     return data.totalPages;
+//   } catch (error) {
+//     console.error('Database Error:', error);
+//     throw new Error('Failed to fetch total number of invoices.');
+//   }
+// }
