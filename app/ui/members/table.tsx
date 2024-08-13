@@ -99,7 +99,8 @@ export default async function Table({  query, currentPage
                   {member.employee_id}
                 </td>
                 <td className="flex justify-end gap-2 whitespace-nowrap px-6 py-4 text-sm">
-                  {/* 추가 작업 버튼을 여기에 추가할 수 있습니다. */}
+                  <UpdateInvoice id={member.employee_id}/>
+                  <DeleteInvoice id={member.employee_id}/>
                 </td>
               </tr>
             ))}

@@ -230,21 +230,13 @@ export async function fetchFilteredCustomers(query: string) {
 }
 
 // ==================================================================================================
-// MembersTable 인터페이스 정의
-interface MembersTable {
-  employee_id: number;
-  name: string;
-  team: string;
-  position: string;
-  position_nm: string;
-}
-const a = 5;
+
 export async function fetchFilteredMembers(query: string, currentPage: number) {
   try {
     // 빈 문자열 또는 undefined를 처리하는 간단한 방법
     const sanitizedQuery = query || ""; // query가 빈 문자열 또는 undefined인 경우 빈 문자열로 처리
 
-    const response = await fetch(`http://localhost:4000/api/members?page=${currentPage}&query=${encodeURIComponent(sanitizedQuery)}&itemsPerPage=${ITEMS_PER_PAGE}`);
+    const response = await fetch(`http://localhost:4000/api/members?page=${currentPage}&query=${encodeURIComponent(sanitizedQuery)}`);
 
     if (!response.ok) {
       const errorText = await response.text();
@@ -272,7 +264,7 @@ export async function fetchMembersPages() {
     }
 
     const beginData = await response.json();
-    // const totalPages = Math.ceil(totalCount / ITEMS_PER_PAGE);
+
     return beginData;
   } catch (error) {
     console.error('Database Error:', error);
