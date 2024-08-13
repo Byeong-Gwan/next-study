@@ -24,7 +24,8 @@ export default async function Page({
   const currentPage = Number(searchParams?.page) || 1;
   // const totalPages = await fetchMembersPages(query,currentPage);
 
-  const data = await fetchFilteredMembers(query, currentPage);
+  const data = await
+    fetchMembersPages();
 
   return (
     <div className="rounded-lg bg-gray-50 p-2 md:pt-0">
@@ -36,7 +37,7 @@ export default async function Page({
 
       </div>
       <Suspense key={query + currentPage} fallback={<InvoicesTableSkeleton />}>
-        <Table data = {data.data}   currentPage={currentPage}/>
+        <Table data = {data} query={query}   currentPage={currentPage}/>
       </Suspense>
       <div className="mt-5 flex w-full justify-center">
         <Pagination totalPages={data.totalPages} />

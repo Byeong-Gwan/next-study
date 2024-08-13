@@ -17,8 +17,7 @@ interface Props {
   data: Members[];
 }
 
-export default async function Table({   query,
-                                currentPage
+export default async function Table({  query, currentPage
                               }: {
   query: string;
   currentPage: number;

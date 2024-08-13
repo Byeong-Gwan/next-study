@@ -239,35 +239,43 @@ interface MembersTable {
   position_nm: string;
 }
 const a = 5;
-export async function fetchFilteredMembers(query: string,
-                                           currentPage: number,) {
+export async function fetchFilteredMembers(query: string, currentPage: number) {
   try {
-    const response = await fetch(`http://localhost:4000/api/members?page=${currentPage}&query=${encodeURIComponent(query)}`);
+    // 빈 문자열 또는 undefined를 처리하는 간단한 방법
+    const sanitizedQuery = query || ""; // query가 빈 문자열 또는 undefined인 경우 빈 문자열로 처리
+
+    const response = await fetch(`http://localhost:4000/api/members?page=${currentPage}&query=${encodeURIComponent(sanitizedQuery)}&itemsPerPage=${ITEMS_PER_PAGE}`);
 
     if (!response.ok) {
-      throw new Error('Failed to fetch members.');
+      const errorText = await response.text();
+      throw new Error(`Failed to fetch members: ${errorText}`);
     }
 
     const data = await response.json();
 
-    return { data:data } // Assuming `members` is the array of member data
+    // 데이터 구조가 예상한 대로인지 확인하고 반환
+    return { data: data.members || data, totalPages: data.totalPages };
   } catch (error) {
-    console.error('Database Error:', error);
+    console.error('Fetch Error:', error); // 좀 더 구체적인 에러 로그
     throw new Error('Failed to fetch members.');
   }
 }
 
-// export async function fetchMembersPages() {
-//   try {
-//     const response = await fetch(`http://localhost:4000/api/members`);
-//
-//     const data = await response.json();
-//     const totalCount = data.totalCount; // totalCount 값을 포함한 응답이 있다고 가정
-//     // const totalPages = Math.ceil(totalCount / ITEMS_PER_PAGE);
-//
-//     return data.totalPages;
-//   } catch (error) {
-//     console.error('Database Error:', error);
-//     throw new Error('Failed to fetch total number of invoices.');
-//   }
-// }
+
+export async function fetchMembersPages() {
+  try {
+    const response = await fetch(`http://localhost:4000/api/members`);
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Failed to fetch total number of invoices: ${errorText}`);
+    }
+
+    const beginData = await response.json();
+    // const totalPages = Math.ceil(totalCount / ITEMS_PER_PAGE);
+    return beginData;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch total number of invoices.');
+  }
+}
