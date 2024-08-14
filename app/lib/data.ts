@@ -1,3 +1,10 @@
+/**
+ * @file app.lib.data.ts
+ * @author 김병관
+ * @since 2024.08.01
+ * @desc next js
+ */
+
 import { sql } from "@vercel/postgres";
 import {
   CustomerField,
@@ -231,6 +238,12 @@ export async function fetchFilteredCustomers(query: string) {
 
 // ==================================================================================================
 
+/**
+ * @function fetchFilteredMembers
+ * @author 김병관
+ * @since 2024.08.10
+ * @desc API 통신 JSON Type 데이터 조회(검색에 입력한 TEXT 있으면 data, TotalPages 조회 )
+ */
 export async function fetchFilteredMembers(query: string, currentPage: number) {
   try {
     // 빈 문자열 또는 undefined를 처리하는 간단한 방법
@@ -253,7 +266,12 @@ export async function fetchFilteredMembers(query: string, currentPage: number) {
   }
 }
 
-
+/**
+ * @function fetchMembersPages
+ * @author 김병관
+ * @since 2024.08.10
+ * @desc API 통신 JSON Type 데이터 조회
+ */
 export async function fetchMembersPages() {
   try {
     const response = await fetch(`http://localhost:4000/api/members`);

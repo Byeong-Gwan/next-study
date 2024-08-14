@@ -1,8 +1,11 @@
-import Image from 'next/image';
+/**
+ * @file app.ui.members.table.tsx
+ * @author 김병관
+ * @since 2024.08.01
+ * @desc next js (tea time members 조회)
+ */
 import { UpdateInvoice, DeleteInvoice } from '@/app/ui/invoices/buttons';
-import InvoiceStatus from '@/app/ui/invoices/status';
-import { formatDateToLocal, formatCurrency } from '@/app/lib/utils';
-import { fetchFilteredInvoices, fetchFilteredMembers, fetchMembersPages } from '@/app/lib/data';
+import { fetchFilteredMembers } from '@/app/lib/data';
 
 // app/ui/invoices/table.tsx
 interface Members {
