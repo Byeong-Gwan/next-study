@@ -22,10 +22,9 @@ export default async function Page({
 }) {
   const query = searchParams?.query || '';
   const currentPage = Number(searchParams?.page) || 1;
-  // const totalPages = await fetchMembersPages(query,currentPage);
+  const totalPages = await fetchFilteredMembers(query, currentPage);
 
-  const data = await
-    fetchMembersPages();
+  const data = await fetchMembersPages();
 
   return (
     <div className="rounded-lg bg-gray-50 p-2 md:pt-0">
@@ -40,7 +39,7 @@ export default async function Page({
         <Table data = {data} query={query}   currentPage={currentPage}/>
       </Suspense>
       <div className="mt-5 flex w-full justify-center">
-        <Pagination totalPages={data.totalPages} />
+        <Pagination totalPages={totalPages.totalPages} />
       </div>
     </div>
   );

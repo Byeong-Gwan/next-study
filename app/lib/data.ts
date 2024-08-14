@@ -260,7 +260,7 @@ export async function fetchMembersPages() {
 
     if (!response.ok) {
       const errorText = await response.text();
-      throw new Error(`Failed to fetch total number of invoices: ${errorText}`);
+      throw new Error(`Failed to fetch total number of members: ${errorText}`);
     }
 
     const beginData = await response.json();
