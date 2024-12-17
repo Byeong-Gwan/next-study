@@ -1,6 +1,11 @@
-// pages/coffees.tsx
+// app/pages/customers.tsx
 
-import { useState } from 'react';
+
+"use client"; // 클라이언트 사이드 컴포넌트로 지정
+
+import { useState } from "react";
+import { fetchCoffeeData } from '@/app/lib/data';
+import Table from '@/app/ui/customers/table';
 
 // 임의 커피 데이터 생성 (최소 20개)
 const coffeeData = [
@@ -31,9 +36,10 @@ const coffeeData = [
 // 페이지네이션: 한 페이지에 표시할 커피 리스트 항목 수
 const ITEMS_PER_PAGE = 5;
 
-export default function CustomersTable() {
-  let currentPage: number, setCurrentPage: (value: (((prevState: number) => number) | number)) => void;
-  [currentPage, setCurrentPage] = useState(1);
+
+export default function Page() {
+
+  const [currentPage, setCurrentPage] = useState(1);
 
   // 현재 페이지에 해당하는 커피 리스트 항목을 추출
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;

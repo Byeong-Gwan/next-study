@@ -289,3 +289,30 @@ export async function fetchMembersPages() {
     throw new Error('Failed to fetch total number of invoices.');
   }
 }
+
+
+// app/lib/data.ts
+
+export async function fetchCoffeeData() {
+  try {
+    // 커피 목록을 가져오는 SQL 쿼리 또는 API 호출
+    const coffeeListPromise = sql`SELECT * FROM coffee_menu`; // 커피 메뉴 데이터 가져오기 예시
+
+    const coffeeListData = await coffeeListPromise;
+
+    // 커피 데이터를 가공하여 반환
+    const coffeeList = coffeeListData.rows.map((row: any) => ({
+      id: row.id,
+      name: row.name,
+      price: formatCurrency(row.price ?? '0'),
+      description: row.description,
+    }));
+
+    return coffeeList;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch coffee data.');
+  }
+}
+
+
