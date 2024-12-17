@@ -1,8 +1,60 @@
-## Next.js App Router Course - Starter
+## Next.js 공부
 
-This is the starter template for the Next.js App Router Course. It contains the starting code for the dashboard application.
+### Directory
+Next.js 프로젝트 구조는 일반적으로 pages와 components, lib, styles 등의 디렉토리로 나뉘어져 있으며, 
+각 디렉토리와 파일은 특정한 역할을 합니다. 이 구조가 처음에는 혼란스러울 수 있는데, 
+각 디렉토리와 파일이 어떻게 연결되는지 이해하는 것이 중요합니다. 아래에서 Next.js의 기본 구조를 설명해 드리겠습니다.
 
-For more information, see the [course curriculum](https://nextjs.org/learn) on the Next.js Website.
+1. pages 폴더
+   Next.js에서 가장 중요한 폴더 중 하나로, URL 경로와 직접적으로 연결됩니다. 이 폴더에 있는 파일은 기본적으로 URL 라우팅에 해당합니다.
+
+   예시: pages/index.js는 / 경로로 접근할 때 보여지는 페이지입니다.
+   동적 라우팅: pages/posts/[id].js처럼 [변수명].js 파일을 만들면, 동적 경로를 처리할 수 있습니다. 
+   예를 들어, /posts/1은 id가 1인 페이지로 연결됩니다.
+2. components 폴더
+   이 폴더는 재사용 가능한 UI 컴포넌트를 포함하는 곳입니다. 예를 들어, 버튼, 테이블, 카드 등 
+   여러 곳에서 사용할 수 있는 UI 요소를 이 폴더에 넣습니다.
+
+   예시: components/Button.js는 버튼 컴포넌트입니다.
+   역할: 컴포넌트는 여러 페이지에서 재사용되기 때문에, 각각의 컴포넌트를 하나의 파일로 관리합니다.
+3. lib 폴더
+   lib 폴더는 데이터 처리나 API 호출 등을 담당하는 도움이 되는 함수들을 넣는 곳입니다. 주로 비즈니스 로직이나 데이터 처리를 담당하는 코드가 여기에 들어갑니다.
+
+   예시: lib/data.js 파일에는 데이터를 가져오는 함수들이 있을 수 있습니다. 
+   예를 들어, fetchMembers()나 fetchLatestInvoices() 같은 함수들이 있을 수 있습니다.
+   역할: 이 파일에서 API를 호출하고 데이터를 처리한 후, 컴포넌트에 전달하여 화면에 렌더링하는 방식입니다.
+4. styles 폴더
+   스타일을 정의하는 CSS 파일들이 들어갑니다. Next.js에서는 기본적으로 global.css를 제공하고, 
+   스타일 파일을 컴포넌트마다 개별적으로 작성할 수도 있습니다.
+
+5. public 폴더
+   이 폴더는 정적 파일(이미지, 폰트, 아이콘 등)을 저장하는 곳입니다. 
+   public/에 있는 파일들은 프로젝트의 루트에서 / 경로로 접근할 수 있습니다.
+
+## Next.js에서 수정할 위치는 왜 이렇게 되는지?
+예시 코드 분석:
+Table 컴포넌트 (app/ui/invoices/table.tsx):
+
+data를 받아서 테이블 형식으로 렌더링하는 컴포넌트입니다. 이 컴포넌트는 fetchFilteredMembers(query, currentPage) 함수를 통해 데이터를 받아옵니다. 
+이 함수는 lib/data.js 또는 비슷한 파일에서 정의된 함수일 가능성이 큽니다.
+왜 여기서 수정하는가? 이 코드는 실제 테이블에 표시되는 데이터를 관리하는 부분입니다. 
+테이블에 표시할 데이터가 data 배열로 넘어오므로, 데이터나 레이아웃을 수정하려면 이 컴포넌트를 수정해야 합니다.
+LatestInvoices 컴포넌트 (app/ui/invoices/latest.tsx):
+
+이 컴포넌트는 최근 청구서 목록을 표시하는 부분입니다. fetchLatestInvoices() 함수가 사용되고 있으며, 이는 **lib/data.js**에서 정의되어 있을 가능성이 큽니다.
+왜 여기서 수정하는가? 이 컴포넌트는 청구서 데이터를 화면에 어떻게 표시할지를 담당합니다. 따라서 데이터가 어떻게 렌더링되는지 변경하려면 이 부분을 수정해야 합니다.
+요약:
+Next.js에서 각 파일은 역할에 맞게 분리되어 있습니다.
+
+pages: URL 경로와 직접적으로 연결된 페이지 컴포넌트들.
+components: 재사용 가능한 UI 컴포넌트들.
+lib: 데이터 처리 및 API 호출 함수들.
+styles: CSS나 스타일 관련 파일들.
+따라서, 원하는 기능을 수정하려면 해당 기능이 어디에서 처리되는지 먼저 확인하고, 
+데이터를 가져오는 함수나 렌더링 로직을 수정해야 합니다. 예를 들어, 
+Table 컴포넌트에서 데이터를 가져오는 fetchFilteredMembers 함수나, 
+LatestInvoices에서 데이터를 가져오는 fetchLatestInvoices 함수가 어디에 정의되어 있는지 확인한 후, 
+그 함수들이 어떤 데이터를 처리하는지 파악하는 것이 중요합니다.
 
 ## Login 
 * Email: user@nextmail.com
